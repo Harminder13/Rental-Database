@@ -1,0 +1,455 @@
+DROP DATABASE IF EXISTS rentalDB;
+CREATE DATABASE IF NOT EXISTS rentalDB;
+USE rentalDB;
+
+CREATE TABLE Properties (
+    ID INT NOT NULL PRIMARY KEY,
+    accesible VARCHAR(3) NOT NULL,
+    parking VARCHAR(3) NOT NULL,
+    numBedrooms VARCHAR(2) NOT NULL,
+    numBathrooms VARCHAR(2) NOT NULL,
+    costPerMonth VARCHAR(10) NOT NULL,
+    listingDate VARCHAR(20) NOT NULL,
+    houseApartmentNum VARCHAR(3),
+    streetNum VARCHAR(10) NOT NULL,
+    city VARCHAR(30) NOT NULL,
+    province VARCHAR(20) NOT NULL,
+    postalCode CHAR(6) NOT NULL
+);
+
+CREATE TABLE House (
+    ID INT NOT NULL PRIMARY KEY,
+    fenced VARCHAR(3) NOT NULL,
+    type VARCHAR(8) NOT NULL,
+    FOREIGN KEY (ID) REFERENCES Properties(ID)
+);
+
+CREATE TABLE Apartment (
+    ID INT NOT NULL PRIMARY KEY,
+    floorNumber VARCHAR(3) NOT NULL,
+    elevator VARCHAR(3) NOT NULL,
+    FOREIGN KEY (ID) REFERENCES Properties(ID)
+);
+
+CREATE TABLE Room (
+    ID INT NOT NULL PRIMARY KEY,
+    occupancy VARCHAR(3) NOT NULL,
+    kitchen VARCHAR(3) NOT NULL,
+    FOREIGN KEY (ID) REFERENCES Properties(ID)
+);
+
+CREATE TABLE Furnishing(
+    roomID INT NOT NULL PRIMARY KEY,
+    furnishing VARCHAR(40) NOT NULL,
+    FOREIGN KEY (roomID) REFERENCES Room(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE RentalGroup(
+    fourDigitID CHAR(4) NOT NULL PRIMARY KEY,
+    accesible VARCHAR(3),
+    parking VARCHAR(3),
+    type VARCHAR(10),
+    numBedrooms VARCHAR(3),
+    numBathrooms VARCHAR(3),
+    maxPrice VARCHAR(10)
+);
+
+CREATE TABLE Leases(
+    signDate DATE NOT NULL,
+    endDate DATE NOT NULL,
+    monthlyCost VARCHAR(3),
+	ID INT NOT NULL,
+    fourDigitID CHAR(4) NOT NULL,
+    PRIMARY KEY (ID, fourDigitID),
+    FOREIGN KEY (ID) REFERENCES Properties(ID) ON DELETE CASCADE,
+    FOREIGN KEY (fourDigitID) REFERENCES RentalGroup(fourDigitID) ON DELETE CASCADE
+);
+
+CREATE TABLE People(
+    firstName VARCHAR(60) NOT NULL,
+    lastName VARCHAR(60) NOT NULL,
+    twoLetterID CHAR(2) NOT NULL,
+    twoNumbersID CHAR(2) NOT NULL,
+    PRIMARY KEY (twoLetterID, twoNumbersID),
+    phone VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Renter(
+    twoLetterID CHAR(2) NOT NULL,
+    twoNumbersID CHAR(2) NOT NULL,
+    PRIMARY KEY (twoLetterID, twoNumbersID),
+    studentNumber VARCHAR(10) NOT NULL,
+    graduationYear CHAR(4) NOT NULL,
+    program VARCHAR(20) NOT NULL,
+	FOREIGN KEY (twoLetterID, twoNumbersID) REFERENCES People(twoLetterID, twoNumbersID) ON DELETE CASCADE
+);
+
+CREATE TABLE PropertyManager(
+    twoLetterID CHAR(2) NOT NULL,
+    twoNumbersID CHAR(2) NOT NULL,
+    PRIMARY KEY (twoLetterID, twoNumbersID),
+	FOREIGN KEY (twoLetterID, twoNumbersID) REFERENCES People(twoLetterID, twoNumbersID) ON DELETE CASCADE
+);
+
+CREATE TABLE Owner(
+    twoLetterID CHAR(2) NOT NULL,
+    twoNumbersID CHAR(2) NOT NULL,
+    PRIMARY KEY (twoLetterID, twoNumbersID),
+	FOREIGN KEY (twoLetterID, twoNumbersID) REFERENCES People(twoLetterID, twoNumbersID) ON DELETE CASCADE
+);
+
+CREATE TABLE Manages(
+    propertyID INT NOT NULL,
+    twoLetterID CHAR(2) NOT NULL,
+    twoNumbersID CHAR(2) NOT NULL,
+    year CHAR(4) NOT NULL,
+    PRIMARY KEY (propertyID, twoLetterID, twoNumbersID),
+    FOREIGN KEY (propertyID) REFERENCES Properties(ID) ON DELETE CASCADE,
+	FOREIGN KEY (twoLetterID, twoNumbersID) REFERENCES PropertyManager(twoLetterID, twoNumbersID) ON DELETE CASCADE
+);
+
+CREATE TABLE Engages(
+    fourDigitID CHAR(4) NOT NULL,
+    twoLetterID CHAR(2) NOT NULL,
+    twoNumbersID CHAR(2) NOT NULL,
+    PRIMARY KEY (fourDigitID, twoLetterID, twoNumbersID),
+    FOREIGN KEY (fourDigitID) REFERENCES RentalGroup(fourDigitID) ON DELETE CASCADE,
+    FOREIGN KEY (twoLetterID, twoNumbersID) REFERENCES Renter(twoLetterID, twoNumbersID) ON DELETE CASCADE
+);
+
+CREATE TABLE Owns(
+    propertyID INT NOT NULL,
+    twoLetterID CHAR(2) NOT NULL,
+    twoNumbersID CHAR(2) NOT NULL,
+    PRIMARY KEY (propertyID, twoLetterID, twoNumbersID),
+	FOREIGN KEY (propertyID) REFERENCES Properties(ID) ON DELETE CASCADE,
+    FOREIGN KEY (twoLetterID, twoNumbersID) REFERENCES Owner(twoLetterID, twoNumbersID) ON DELETE CASCADE
+);
+
+insert into Properties values
+(1, 'Yes', 'Yes', '3', '2', '1500', '2023-01-01', '101', '123', 'Cityville', 'Provinceville', 'A1B 2C3'),
+(2, 'Yes', 'Yes', '2', '1', '1200', '2023-02-01', '201', '456', 'Townville', 'Provinceville', 'D4E 5F6'),
+(3, 'Yes', 'No', '4', '3', '2000', '2023-03-01', '301', '789', 'Villageville', 'Provinceville', 'G7H 8I9'),
+(4, 'No', 'Yes', '2', '1', '1000', '2023-04-01', '401', '012', 'Hamletville', 'Provinceville', 'J1K 2L3'),
+(5, 'Yes', 'No', '1', '1', '800', '2023-05-01', '501', '345', 'Countryside', 'Provinceville', 'M4N 5O6'),
+(6, 'Yes', 'Yes', '3', '2', '1800', '2023-06-01', '601', '678', 'Urbanville', 'Provinceville', 'P7Q 8R9'),
+(7, 'Yes', 'Yes', '2', '2', '1600', '2023-07-01', '701', '910', 'Suburbia', 'Provinceville', 'S1T 2U3'),
+(8, 'No', 'No', '1', '1', '900', '2023-08-01', '801', '112', 'Ruralville', 'Provinceville', 'V3W 4X5'),
+(9, 'Yes', 'Yes', '4', '2', '2200', '2023-09-01', '901', '314', 'Beachside', 'Provinceville', 'Y6Z 7A8'),
+(10, 'Yes', 'Yes', '3', '3', '2500', '2023-10-01', '1001', '516', 'Lakeshore', 'Provinceville', 'B9C 1D2'),
+(11, 'No', 'Yes', '2', '1', '1200', '2023-11-01', '1101', '718', 'Mountainview', 'Provinceville', 'E3F 4G5'),
+(12, 'Yes', 'No', '2', '2', '1700', '2023-12-01', '1201', '920', 'Hilltop', 'Provinceville', 'I6J 7K8'),
+(13, 'Yes', 'Yes', '3', '2', '1800', '2024-01-01', NULL, '122', 'Parkside', 'Provinceville', 'L9M 1N2'),
+(14, 'No', 'No', '1', '1', '800', '2024-02-01', NULL, '324', 'Woodland', 'Provinceville', 'O3P 4Q5'),
+(15, 'Yes', 'No', '2', '1', '1300', '2024-03-01', NULL, '526', 'Riverfront', 'Provinceville', 'R6S 7T8'),
+(16, 'Yes', 'Yes', '3', '2', '1900', '2024-04-01', NULL, '728', 'Harborside', 'Provinceville', 'U9V 1W2'),
+(17, 'No', 'Yes', '2', '2', '1600', '2024-05-01', NULL, '930', 'Valleyview', 'Provinceville', 'Y3Z 4A5'),
+(18, 'Yes', 'No', '1', '1', '1000', '2024-06-01', NULL, '132', 'Hometown', 'Provinceville', 'B6C 7D8');
+
+insert into House values
+(1, 'Yes', 'Detached'),
+(2, 'No', 'Semi'),
+(3, 'No', 'Semi'),
+(4, 'Yes', 'Detached'),
+(5, 'Yes', 'Detached'),
+(6, 'No', 'Semi');
+
+insert into Apartment values
+(7, '3', 'Yes'),
+(8, '1', 'No'),
+(9, '2', 'Yes'),
+(10, '4', 'Yes'),
+(11, '2', 'No'),
+(12, '3', 'Yes');
+
+insert into Room values
+(13, '3', 'Yes'),
+(14, '3', 'Yes'),
+(15, '3', 'Yes'),
+(16, '3', 'Yes'),
+(17, '3', 'No'),
+(18, '3', 'No');
+
+insert into Furnishing values
+(13, 'Bed, Desk, Chair'),
+(14, 'Sofa, Coffee Table, TV'),
+(15, 'Two Beds, Wardrobe, Desk, Chair'),
+(16, 'Two Beds, Wardrobe, Desk, Chair'),
+(17, 'Bed, Desk, Chair'),
+(18, 'Bed, Desk, Chair');
+
+insert into RentalGroup values
+('1234', 'Yes', 'Yes', NULL, '3', '2', '2000'),
+('2345', 'Yes', 'Yes', 'House', '3', '1', '1500'),
+('3456', 'Yes', 'No', 'House', '3', '3', '2500'),
+('4567', 'No', 'Yes', 'House', '3', '1', '1000'),
+('5671', 'Yes', 'No', 'House', '3', '1', NULL),
+('6739', 'Yes', 'Yes', 'House', '3', NULL, '1800'),
+('7881', 'Yes', 'Yes', 'Apartment', '3', '2', '1600'),
+('8129', 'No', 'No', 'Apartment', '3', '1', '900'),
+('3122', 'Yes', 'Yes', 'Apartment', NULL, '2', '2200'),
+('0123', 'Yes', 'Yes', 'Apartment', '3', '3', '2500'),
+('2346', 'No', 'Yes', 'Apartment', '3', '1', '1200'), 
+('3426', 'Yes', 'No', 'Apartment', '3', '1', NULL),  
+('4847', 'Yes', NULL, 'Room', '3', '1', NULL),
+('5678', 'No', 'Yes', 'Room', '3', '2', '1600'),
+('6789', 'Yes', 'No', 'Room', '3', '1', '1000'),
+('7890', 'Yes', 'Yes', NULL, NULL, '2', '2200'),
+('8901', 'No', 'Yes', 'Room', '3', '2', '1700'),
+('9012', 'Yes', 'No', 'Room', '3', '1', NULL);
+
+insert into Leases values
+('2023-01-15', '2023-07-15', 1500, 1, '1234'),  
+('2023-02-20', '2023-08-20', 1200, 2, '2345'),  
+('2023-03-25', '2023-09-25', 2000, 3, '3456'),  
+('2023-04-30', '2023-10-30', 1000, 4, '4567'),  
+('2023-05-05', '2023-11-05', 800, 5, '5671'),   
+('2023-06-10', '2023-12-10', 1800, 6, '6739'),  
+('2023-07-15', '2024-01-15', 1600, 7, '7881'),  
+('2023-08-20', '2024-02-20', 1300, 8, '8129'),  
+('2023-09-25', '2024-03-25', 1900, 9, '3122'),  
+('2023-10-30', '2024-04-30', 1600, 10, '0123'), 
+('2023-11-05', '2024-05-05', 1000, 11, '2346'), 
+('2023-12-10', '2024-06-10', 1500, 12, '3426'), 
+('2024-01-15', '2024-07-15', 1200, 13, '4847'),
+('2024-02-20', '2024-08-20', 2000, 14, '5678'), 
+('2024-03-25', '2024-09-25', 1000, 15, '6789'), 
+('2024-04-30', '2024-10-30', 800, 16, '7890'), 
+('2024-05-05', '2024-11-05', 1800, 17, '8901'), 
+('2024-06-10', '2024-12-10', 1600, 18, '9012'); 
+
+insert into People values
+('John', 'Smith', 'AI', '01', '+1234567890'),
+('Alice', 'Johnson', 'AI', '02', '+1987654321'),
+('Michael', 'Brown', 'AI', '03', '+1650432109'),
+('Jennifer', 'Williams', 'BI', '01', '+1789543210'),
+('David', 'Jones', 'BI', '02', '+1326547890'),
+('Jessica', 'Martinez', 'BI', '03', '+1876504321'),
+('Daniel', 'Anderson', 'CI', '01', '+1432056789'),
+('Sarah', 'Taylor', 'CI', '02', '+1567890432'),
+('Christopher', 'Thomas', 'CI', '03', '+1890765432'),
+('Elizabeth', 'Moore', 'DI', '01', '+1789453210'),
+('Matthew', 'Jackson', 'DI', '02', '+1987654321'),
+('Emily', 'White', 'DI', '03', '+1326547890'),
+('Robert', 'Harris', 'EI', '01', '+1650432109'),
+('Laura', 'Thompson', 'EI', '02', '+1432056789'),
+('William', 'Lewis', 'EI', '03', '+1987654321'),
+('Amanda', 'Clark', 'FI', '01', '+1789543210'),
+('Joseph', 'Rodriguez', 'FI', '02', '+1789453210'),
+('Megan', 'Lee', 'FI', '03', '+1432056789'),
+('Ryan', 'Walker', 'GI', '01', '+1650432109'),
+('Kimberly', 'Young', 'GI', '02', '+1987654321'),
+('Kevin', 'Allen', 'GI', '03', '+1326547890'),
+('Melissa', 'King', 'HI', '01', '+1567890432'),
+('James', 'Wright', 'HI', '02', '+1890765432'),
+('Stephanie', 'Scott', 'HI', '03', '+1789543210'),
+('Brian', 'Lopez', 'II', '01', '+1234567890'),
+('Nicole', 'Hill', 'II', '02', '+1650432109'),
+('Brandon', 'Green', 'II', '03', '+1326547890'),
+('Rachel', 'Adams', 'JI', '01', '+1987654321'),
+('Eric', 'Baker', 'JI', '02', '+1432056789'),
+('Ashley', 'Carter', 'JI', '03', '+1789543210'),
+('Thomas', 'Mitchell', 'KI', '01', '+1567890432'),
+('Samantha', 'Perez', 'KI', '02', '+1890765432'),
+('Olivia', 'Roberts', 'KI', '03', '+1234567890'),
+('Tyler', 'Cook', 'LI', '01', '+1650432109'),
+('Hannah', 'Rivera', 'LI', '02', '+1987654321'),
+('Andrew', 'Wood', 'LI', '03', '+1432056789'),
+('Rebecca', 'Gonzalez', 'MI', '01', '+1789543210'),
+('Joshua', 'Evans', 'MI', '02', '+1567890432'),
+('Michelle', 'Morris', 'MI', '03', '+1890765432'),
+('Samantha', 'Bell', 'NI', '01', '+1234567890'),
+('Nicholas', 'Sanchez', 'NI', '02', '+1650432109'),
+('Brittany', 'Price', 'NI', '03', '+1326547890'),
+('Timothy', 'Fisher', 'OI', '01', '+1987654321'),
+('Julia', 'Collins', 'OI', '02', '+1432056789'),
+('Victoria', 'Bennett', 'OI', '03', '+1789543210'),
+('Heather', 'Coleman', 'PI', '01', '+1567890432'),
+('Stephanie', 'Morgan', 'PI', '02', '+1890765432'),
+('William', 'Patterson', 'PI', '03', '+1234567890'),
+('Alexander', 'Hayes', 'QI', '01', '+1650432109'),
+('Madison', 'Reed', 'QI', '02', '+1987654321'),
+('Lauren', 'Howard', 'QI', '03', '+1326547890'),
+('Justin', 'Diaz', 'RI', '01', '+1789543210'),
+('Tiffany', 'Torres', 'RI', '02', '+1567890432'),
+('Zachary', 'Murphy', 'RI', '03', '+1890765432'),
+('Jane', 'Smith', 'SI', '01', '+1234567890'),
+('Robert', 'Johnson', 'SI', '02', '+1987654321'),
+('Lisa', 'Williams', 'SI', '03', '+1650432109'),
+('William', 'Brown', 'TI', '04', '+1789543210'),
+('Patricia', 'Jones', 'TI', '05', '+1326547890'),
+('David', 'Martinez', 'TI', '06', '+1876504321'),
+('Carol', 'Anderson', 'UI', '07', '+1432056789'),
+('James', 'Taylor', 'UI', '08', '+1567890432'),
+('Jennifer', 'Thomas', 'UI', '09', '+1890765432'),
+('Laura', 'Moore', 'VI', '10', '+1234567890'),
+('Charles', 'Jackson', 'VI', '11', '+1650432109'),
+('Jessica', 'White', 'VI', '12', '+1326547890');
+
+insert into Renter values
+('AI', '01', 'S123456789', '2023', 'Computer Science'),
+('AI', '02', 'S234567890', '2023', 'Engineering'),
+('AI', '03', 'S345678901', '2023', 'Business Administration'),
+('BI', '01', 'S456789012', '2024', 'Biology'),
+('BI', '02', 'S567890123', '2024', 'Psychology'),
+('BI', '03', 'S678901234', '2024', 'History'),
+('CI', '01', 'S789012345', '2025', 'English Literature'),
+('CI', '02', 'S890123456', '2025', 'Mathematics'),
+('CI', '03', 'S901234567', '2025', 'Economics'),
+('DI', '01', 'S012345678', '2026', 'Physics'),
+('DI', '02', 'S123456789', '2026', 'Sociology'),
+('DI', '03', 'S234567890', '2026', 'Chemistry'),
+('EI', '01', 'S345678901', '2027', 'Political Science'),
+('EI', '02', 'S456789012', '2027', 'Art History'),
+('EI', '03', 'S567890123', '2027', 'Music'),
+('FI', '01', 'S678901234', '2028', 'Anthropology'),
+('FI', '02', 'S789012345', '2028', 'Philosophy'),
+('FI', '03', 'S890123456', '2028', 'Geography'),
+('GI', '01', 'S901234567', '2029', 'Communications'),
+('GI', '02', 'S012345678', '2029', 'Foreign Languages'),
+('GI', '03', 'S123456789', '2029', 'Environmental Science'),
+('HI', '01', 'S234567890', '2030', 'Education'),
+('HI', '02', 'S345678901', '2030', 'Nursing'),
+('HI', '03', 'S456789012', '2030', 'Criminal Justice'),
+('II', '01', 'S567890123', '2031', 'Film Studies'),
+('II', '02', 'S678901234', '2031', 'Theater'),
+('II', '03', 'S789012345', '2031', 'Health Sciences'),
+('JI', '01', 'S890123456', '2032', 'Nutrition'),
+('JI', '02', 'S901234567', '2032', 'Engineering'),
+('JI', '03', 'S012345678', '2032', 'Architecture'),
+('KI', '01', 'S123456789', '2033', 'Business Management'),
+('KI', '02', 'S234567890', '2033', 'Computer Engineering'),
+('KI', '03', 'S345678901', '2033', 'Information Technology'),
+('LI', '01', 'S456789012', '2034', 'Physics'),
+('LI', '02', 'S567890123', '2034', 'Psychology'),
+('LI', '03', 'S678901234', '2034', 'Mathematics'),
+('MI', '01', 'S789012345', '2035', 'Biology'),
+('MI', '02', 'S890123456', '2035', 'Art'),
+('MI', '03', 'S901234567', '2035', 'Chemistry'),
+('NI', '01', 'S012345678', '2036', 'History'),
+('NI', '02', 'S123456789', '2036', 'Political Science'),
+('NI', '03', 'S234567890', '2036', 'Economics'),
+('OI', '01', 'S345678901', '2037', 'English Literature'),
+('OI', '02', 'S456789012', '2037', 'Computer Science'),
+('OI', '03', 'S567890123', '2037', 'Engineering'),
+('PI', '01', 'S678901234', '2038', 'Biology'),
+('PI', '02', 'S789012345', '2038', 'Sociology'),
+('PI', '03', 'S890123456', '2038', 'Chemistry'),
+('QI', '01', 'S901234567', '2039', 'Political Science'),
+('QI', '02', 'S012345678', '2039', 'Art History'),
+('QI', '03', 'S123456789', '2023', 'Music'),
+('RI', '01', 'P956784567', '2045', 'Political Science'),
+('RI', '02', 'T015345478', '2063', 'Art History'),
+('RI', '03', 'S163436712', '2021', 'Music');
+
+INSERT INTO Engages VALUES
+('1234', 'AI', '01'),
+('1234', 'AI', '02'),
+('1234', 'AI', '03'),
+('2345', 'BI', '01'),
+('2345', 'BI', '02'),
+('2345', 'BI', '03'),
+('3456', 'CI', '01'),
+('3456', 'CI', '02'),
+('3456', 'CI', '03'),
+('4567', 'DI', '01'),
+('4567', 'DI', '02'),
+('4567', 'DI', '03'),
+('5671', 'EI', '01'),
+('5671', 'EI', '02'),
+('5671', 'EI', '03'),
+('6739', 'FI', '01'),
+('6739', 'FI', '02'),
+('6739', 'FI', '03'),
+('7881', 'GI', '01'),
+('7881', 'GI', '02'),
+('7881', 'GI', '03'),
+('8129', 'HI', '01'),
+('8129', 'HI', '02'),
+('8129', 'HI', '03'),
+('3122', 'II', '01'),
+('3122', 'II', '02'),
+('3122', 'II', '03'),
+('0123', 'JI', '01'),
+('0123', 'JI', '02'),
+('0123', 'JI', '03'),
+('2346', 'KI', '01'),
+('2346', 'KI', '02'),
+('2346', 'KI', '03'),
+('3426', 'LI', '01'),
+('3426', 'LI', '02'),
+('3426', 'LI', '03'),
+('4847', 'MI', '01'),
+('4847', 'MI', '02'),
+('4847', 'MI', '03'),
+('5678', 'NI', '01'),
+('5678', 'NI', '02'),
+('5678', 'NI', '03'),
+('6789', 'OI', '01'),
+('6789', 'OI', '02'),
+('6789', 'OI', '03'),
+('7890', 'PI', '01'),
+('7890', 'PI', '02'),
+('7890', 'PI', '03'),
+('8901', 'QI', '01'),
+('8901', 'QI', '02'),
+('8901', 'QI', '03'),
+('9012', 'RI', '01'),
+('9012', 'RI', '02'),
+('9012', 'RI', '03');
+
+insert into PropertyManager values
+('SI', '01'),
+('SI', '02'),
+('SI', '03'),
+('TI', '04'),
+('TI', '05'),
+('TI', '06');
+
+insert into Owner values
+('UI', '07'),
+('UI', '08'),
+('UI', '09'),
+('VI', '10'),
+('VI', '11'),
+('VI', '12');
+
+insert into Manages values
+(1, 'SI', '01','2002'),
+(2, 'SI', '01','2001'),
+(3, 'SI', '01','2000'),
+(4, 'SI', '02','2005'),
+(5, 'SI', '02','2004'),
+(6, 'SI', '02','2007'),
+(7, 'SI', '03','2008'),
+(8, 'SI', '03','2012'),
+(9, 'SI', '03','2013'),
+(10, 'TI', '04','2004'),
+(11, 'TI', '04','2003'),
+(12, 'TI', '04','2003'),
+(13, 'TI', '05','2002'),
+(14, 'TI', '05','2000'),
+(15, 'TI', '05','2010'),
+(16, 'TI', '06','2014'),
+(17, 'TI', '06','2015'),
+(18, 'TI', '06','2012');
+
+insert into Owns values
+(1, 'UI', '07'),
+(2, 'UI', '07'),
+(3, 'UI', '07'),
+(4, 'UI', '08'),
+(5, 'UI', '08'),
+(6, 'UI', '08'),
+(7, 'UI', '09'),
+(8, 'UI', '09'),
+(9, 'UI', '09'),
+(10, 'VI', '10'),
+(11, 'VI', '10'),
+(12, 'VI', '10'),
+(13, 'VI', '11'),
+(14, 'VI', '11'),
+(15, 'VI', '11'),
+(16, 'VI', '12'),
+(17, 'VI', '12'),
+(18, 'VI', '12');
