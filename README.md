@@ -1,7 +1,5 @@
-Rental Database Web Application
+Property Rental Database System
 
-Description:
-This repository hosts a web application built using PHP, CSS, and MySQL to manage a rental database. The application provides functionalities for users to browse, search, and interact with rental data efficiently. It offers features such as user authentication, data manipulation, and intuitive user interface design.
+In this solo project, I developed a comprehensive property rental database system aimed at streamlining property management processes. I began by designing relational tables for properties, owners, tenants, property managers, and rental groups to efficiently organize data within the system. Following this, I implemented key functionalities such as property management, ownership management, tenant management, property manager management, rental group management, and rent calculation.
 
-Copyright & Disclaimer:
-This project is protected under copyright laws. You are free to use, modify, and distribute this code for personal and educational purposes. However, please note that this project comes with no warranties. The author(s) do not take any responsibility for any damages or issues caused by the use of this software. Use it at your own risk.
+For the user interface, I created a user-friendly web application using PHP to interact with the MySQL database. This application allows users to seamlessly view property information, manage rental groups, and calculate average monthly rent. By combining database design, system development, and web application programming, this project serves as a demonstration of my proficiency in various aspects of software development, providing an effective solution for property management tasks.
