@@ -54,3 +54,7 @@ Check out the full project demo here:
 [![Rental Database Demo](https://img.youtube.com/vi/Y4Qa0lvjE8I/0.jpg)](https://www.youtube.com/watch?v=Y4Qa0lvjE8I)  
 
 ---
+### 📄 **License**  
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.  
+
+---
