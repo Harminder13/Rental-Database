@@ -47,15 +47,3 @@ The system uses a relational database with the following core tables:
 ✅ **Rent Calculation:** Developed a dynamic algorithm to adjust calculations based on tenant changes.  
 
 ---
-
-## 🖥️ **User Interface Preview**  
-Example dashboard:  
-
-![Dashboard](./images/dashboard.png)  
-*Property management, rent calculation, and tenant tracking in one place.*  
-
----
-
----
-
-Let me know if you’d like to modify or add anything! 😎
