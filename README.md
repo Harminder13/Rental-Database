@@ -1,5 +1,61 @@
-Property Rental Database System
 
-In this project, I developed a comprehensive property rental database system aimed at streamlining property management processes. I began by designing relational tables for properties, owners, tenants, property managers, and rental groups to efficiently organize data within the system. Following this, I implemented key functionalities such as property management, ownership management, tenant management, property manager management, rental group management, and rent calculation.
+# 🏠 **Property Rental Database System**  
 
-For the user interface, I created a user-friendly web application using PHP to interact with the MySQL database. This application allows users to seamlessly view property information, manage rental groups, and calculate average monthly rent. By combining database design, system development, and web application programming, this project serves as a demonstration of my proficiency in various aspects of software development, providing an effective solution for property management tasks.
+This project features a **comprehensive property rental database system** designed to simplify and automate property management processes. Built with **PHP** and **MySQL**, the system provides an efficient platform for managing properties, tenants, and rental agreements through an intuitive web-based interface.  
+
+---
+
+## 🎯 **Project Overview**  
+🔹 Developed a relational database to store and manage property, tenant, and rental data.  
+🔹 Designed and implemented a user-friendly **PHP-based web application** to handle all management tasks.  
+🔹 Automated rent calculations and rental group organization for efficient property management.  
+
+---
+
+## 🛠️ **Core Features**  
+### 🏡 **Property and Ownership Management**  
+- Efficient organization of property details, including ownership and location.  
+- Dynamic updating of property information and ownership changes.  
+
+### 👥 **Tenant and Rental Group Management**  
+- Add, update, and delete tenant details.  
+- Organize tenants into rental groups for easy tracking and reporting.  
+
+### 💰 **Rent Calculation**  
+- Automated calculation of monthly rent based on tenant data and lease agreements.  
+- Average rent calculations for quick insights into rental performance.  
+
+### 🌐 **Web-Based Interface**  
+- Developed a **PHP-based** interface for seamless interaction with the database.  
+- Clean and responsive design for easy navigation and data entry.  
+
+---
+
+## 📊 **Database Structure**  
+The system uses a relational database with the following core tables:  
+✅ **Properties** – Stores details about available properties.  
+✅ **Owners** – Manages property ownership information.  
+✅ **Tenants** – Records tenant information and lease details.  
+✅ **Property Managers** – Tracks individuals responsible for property oversight.  
+✅ **Rental Groups** – Organizes tenants into rental categories.  
+
+---
+
+## 🌟 **Challenges and Solutions**  
+✅ **Data Integrity:** Established foreign key relationships and data constraints to prevent inconsistencies.  
+✅ **Scalability:** Designed the database structure to support future growth and additional properties.  
+✅ **Rent Calculation:** Developed a dynamic algorithm to adjust calculations based on tenant changes.  
+
+---
+
+## 🖥️ **User Interface Preview**  
+Example dashboard:  
+
+![Dashboard](./images/dashboard.png)  
+*Property management, rent calculation, and tenant tracking in one place.*  
+
+---
+
+---
+
+Let me know if you’d like to modify or add anything! 😎
