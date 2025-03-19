@@ -47,3 +47,8 @@ The system uses a relational database with the following core tables:
 ✅ **Rent Calculation:** Developed a dynamic algorithm to adjust calculations based on tenant changes.  
 
 ---
+
+### 📹 **Demo**  
+Check out the full project demo here: [[Rental Databse Demo](https://www.youtube.com/watch?v=Y4Qa0lvjE8I)]  
+
+---
