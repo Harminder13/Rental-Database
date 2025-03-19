@@ -49,6 +49,8 @@ The system uses a relational database with the following core tables:
 ---
 
 ### 📹 **Demo**  
-Check out the full project demo here: [[Rental Databse Demo](https://www.youtube.com/watch?v=Y4Qa0lvjE8I)]  
+Check out the full project demo here:  
+
+[![Rental Database Demo](https://img.youtube.com/vi/Y4Qa0lvjE8I/0.jpg)](https://www.youtube.com/watch?v=Y4Qa0lvjE8I)  
 
 ---
